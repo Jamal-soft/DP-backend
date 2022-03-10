@@ -33,7 +33,7 @@ public class OrganisationServiceImpl implements OrganisationService{
 
 
     @Override
-    public OrganisationDto createUser(OrganisationDto organisationDto) {
+    public OrganisationDto createOrganisation(OrganisationDto organisationDto) {
         if (organisationRepository.findByEmail(organisationDto.getEmail()) != null) throw new OrganisationServiceException("user already exists");
         ModelMapper modelMapper = new ModelMapper();
 
@@ -54,7 +54,7 @@ public class OrganisationServiceImpl implements OrganisationService{
     }
 
     @Override
-    public OrganisationDto getUser(String email) {
+    public OrganisationDto getOrganisation(String email) {
         OrganisationEntity userEntity = organisationRepository.findByEmail(email);
         if (userEntity == null) throw new UsernameNotFoundException(email);
         OrganisationDto returnValue = new OrganisationDto();
@@ -119,10 +119,10 @@ public class OrganisationServiceImpl implements OrganisationService{
 
 
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        OrganisationEntity userEntity = organisationRepository.findByEmail(email);
-        if (userEntity == null) throw new UsernameNotFoundException(email);
+        OrganisationEntity organisationEntity = organisationRepository.findByEmail(email);
+        if (organisationEntity == null) throw new UsernameNotFoundException(email);
 
-        return new User(userEntity.getEmail(),userEntity.getEncryptedPassword(),
+        return new User(organisationEntity.getEmail(),organisationEntity.getEncryptedPassword(),
         true, true,
         true, true, new ArrayList<>());
 

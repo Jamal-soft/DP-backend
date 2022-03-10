@@ -67,9 +67,10 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
                 .signWith(SignatureAlgorithm.HS512, SecurityConstants.getTokenSecret())
                 .compact();
         OrganisationServiceImpl organisationService = (OrganisationServiceImpl) SpringApplicationContext.getBean("organisationServiceImpl");
-        OrganisationDto organisationDto = organisationService.getUser(userName);
+        OrganisationDto organisationDto = organisationService.getOrganisation(userName);
         res.addHeader(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token);
         res.addHeader("UserID", String.valueOf(organisationDto.getId()));
+
 
     }
 
