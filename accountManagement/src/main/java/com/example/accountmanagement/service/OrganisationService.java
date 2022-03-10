@@ -4,8 +4,8 @@ import com.example.accountmanagement.shared.OrganisationDto;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 public interface OrganisationService extends UserDetailsService {
-    OrganisationDto createUser(OrganisationDto organisationDto);
-    OrganisationDto getUser(String email);
+    OrganisationDto createOrganisation(OrganisationDto organisationDto);
+    OrganisationDto getOrganisation(String email);
    /* OrganisationDto getUserByUserId(String userId);
 
     OrganisationDto updateUser(String id,OrganisationDto userDto);

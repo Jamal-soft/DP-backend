@@ -15,15 +15,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/organisations")
+
 public class OrganisationController {
     @Autowired
     OrganisationServiceImpl organisationService;
 
 
-    @GetMapping
-    public List<OrganisationResp> getUsers(@RequestParam(value = "page", defaultValue = "0") int page,
-                                           @RequestParam(value = "limit", defaultValue = "25") int limit){
+    @GetMapping("/organisations")
+    public List<OrganisationResp> getOrganisations(@RequestParam(value = "page", defaultValue = "0") int page,
+                                                   @RequestParam(value = "limit", defaultValue = "25") int limit){
         List<OrganisationDto> organisations= organisationService.getOrganisations(page,limit);
         List<OrganisationResp> returnValue = new ArrayList<>();
 
@@ -47,14 +47,12 @@ public class OrganisationController {
         returnValue = modelMapper.map(userDto, UserRest.class);
         return returnValue;
     }*/
-    @PostMapping
-    public OrganisationResp createUser(@RequestBody OrganisationDetailsRequestModel organisationDetailsRequestModel) throws Exception{
-        if (organisationDetailsRequestModel.getEmail().isEmpty()) throw new OrganisationServiceException(/*ErrorMessages.MISSING_REQUIRED_FIELD.getErrorMessage()*/"dfqfqs");
-        //UserDto userDto = new UserDto();
-        //BeanUtils.copyProperties(userDetails,userDto);
+    @PostMapping("/signup/organisations")
+    public OrganisationResp createOrganisation(@RequestBody OrganisationDetailsRequestModel organisationDetailsRequestModel) throws Exception{
+        if (organisationDetailsRequestModel.getEmail().isEmpty()) throw new OrganisationServiceException("missing required field");
         ModelMapper modelMapper = new ModelMapper();
         OrganisationDto organisationDto= modelMapper.map(organisationDetailsRequestModel, OrganisationDto.class);
-        OrganisationDto createdOrganisation= organisationService.createUser(organisationDto);
+        OrganisationDto createdOrganisation= organisationService.createOrganisation(organisationDto);
         OrganisationResp returnValue = modelMapper.map(createdOrganisation,OrganisationResp.class);
         //BeanUtils.copyProperties(createdUser,returnValue);
 
