@@ -12,7 +12,6 @@ public class OrganisationDto {
     private String category;
     private boolean verified;
     private byte[] verificationFile;
-    private byte[] image;
     private String Location;
     private String description;
 

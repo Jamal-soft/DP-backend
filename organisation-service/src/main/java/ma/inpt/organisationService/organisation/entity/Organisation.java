@@ -3,10 +3,8 @@ package ma.inpt.organisationService.organisation.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ma.inpt.organisationService.project.ProjectEntity;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Table(name = "organisation")
@@ -23,15 +21,10 @@ public class Organisation {
     private Long rib;
     private String category;
     private boolean verified;
-    private byte[] verificationFile;
-    private byte[] image;
+    private String verificationFile;
+    private String image;
     private String Location;
     private String description;
-/*
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "orgId")
-    private List<ProjectEntity> projects;
-*/
 
 
 

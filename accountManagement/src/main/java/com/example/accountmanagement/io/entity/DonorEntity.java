@@ -19,6 +19,7 @@ public class DonorEntity {
     private String email;
     private String role = "DONOR";
     private String encryptedPassword;
-    private byte[] image;
+    private String image;
     private String Location;
+    private String phoneNumber;
 }

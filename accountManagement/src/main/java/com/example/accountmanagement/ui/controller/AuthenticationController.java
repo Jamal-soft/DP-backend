@@ -1,7 +1,9 @@
 package com.example.accountmanagement.ui.controller;
 
+import com.example.accountmanagement.io.entity.AdminEntity;
 import com.example.accountmanagement.io.entity.DonorEntity;
 import com.example.accountmanagement.io.entity.OrganisationEntity;
+import com.example.accountmanagement.io.repository.AdminRepository;
 import com.example.accountmanagement.io.repository.DonorRepository;
 import com.example.accountmanagement.io.repository.OrganisationRepository;
 import com.example.accountmanagement.security.SecurityConstants;
@@ -27,6 +29,8 @@ public class AuthenticationController {
     OrganisationRepository organisationRepository;
     @Autowired
     DonorRepository donorRepository;
+    @Autowired
+    AdminRepository adminRepository;
 
 
     @Autowired
@@ -36,7 +40,7 @@ public class AuthenticationController {
     public ResponseEntity<?> authenticateUser(@RequestBody LoginRequestModel loginRequestModel){
         DonorEntity donorEntity = donorRepository.findByEmail(loginRequestModel.getEmail());
         OrganisationEntity organisationEntity = organisationRepository.findByEmail(loginRequestModel.getEmail());
-
+        AdminEntity adminEntity = adminRepository.findByEmail(loginRequestModel.getEmail());
 
         if ( organisationEntity!=null){
             if ( bCryptPasswordEncoder.matches(loginRequestModel.getPassword(), organisationEntity.getEncryptedPassword())) {
@@ -57,6 +61,17 @@ public class AuthenticationController {
                         donorEntity.getId(),
                         donorEntity.getEmail(),
                         donorEntity.getRole()));
+            }
+        }
+
+        if ( adminEntity!=null){
+            if ( bCryptPasswordEncoder.matches(loginRequestModel.getPassword(), adminEntity.getEncryptedPassword())) {
+                String token = generateToken(loginRequestModel);
+
+                return ResponseEntity.ok(new JwtResponse(token,
+                        adminEntity.getId(),
+                        adminEntity.getEmail(),
+                        adminEntity.getRole()));
             }
         }
 

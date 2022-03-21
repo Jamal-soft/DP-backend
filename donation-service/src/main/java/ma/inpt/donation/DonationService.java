@@ -1,12 +1,14 @@
 package ma.inpt.donation;
 
-import ma.inpt.donor.DonorEntity;
+
 import ma.inpt.model.DonationRequestModel;
-import ma.inpt.model.DonorModelResponse;
+
+import ma.inpt.model.DonationResponseModelToCalculateSumOfDonations;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 @Service
@@ -20,9 +22,24 @@ public class DonationService {
 
     public DonationEntity createDonation(DonationRequestModel donationRequestModel) {
         ModelMapper modelMapper  = new ModelMapper();
-        DonationEntity donationEntity = modelMapper.map(donationRequestModel,DonationEntity.class);
+        //DonationEntity donationEntity = modelMapper.map(donationRequestModel,DonationEntity.class);
+        DonationEntity donationEntity = new DonationEntity();
+        donationEntity.setDonorId(donationRequestModel.getDonorId());
+        donationEntity.setOrgId(donationRequestModel.getOrgId());
+        donationEntity.setAmount(donationRequestModel.getAmount());
+        donationEntity.setProjectId(donationRequestModel.getProjectId());
         donationEntity.setDate(new Date());
-        DonationEntity donationEntity1 = donationRepository.save(donationEntity);
-        return donationEntity1;
+        donationRepository.save(donationEntity);
+        return donationRepository.save(donationEntity);
+    }
+
+    public List<DonationResponseModelToCalculateSumOfDonations> getSomeOfDonationsPerDonors() {
+        List list = donationRepository.getSomeOfDonationsPerDonors();
+
+        return list;
+    }
+
+    public Long getTotalSomeOfDonations() {
+        return donationRepository.getTotalSomeOfDonations();
     }
 }

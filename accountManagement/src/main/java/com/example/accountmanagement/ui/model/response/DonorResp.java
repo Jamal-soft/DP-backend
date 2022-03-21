@@ -4,7 +4,10 @@ import lombok.Data;
 
 @Data
 public class DonorResp {
+
+    private Long id;
     private String email;
     private String name;
-    private String age;
+    private String phoneNumber;
+    private String image;
 }

@@ -1,10 +1,14 @@
 package com.example.accountmanagement;
 
+import com.cloudinary.Cloudinary;
 import com.example.accountmanagement.security.AppProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @SpringBootApplication
 public class AccountManagementApplication {
@@ -28,5 +32,15 @@ public class AccountManagementApplication {
     public AppProperties getAppProperties()
     {
         return new AppProperties();
+    }
+    @Bean
+    public Cloudinary cloudinaryConfig() {
+        Cloudinary cloudinary = null;
+        Map config = new HashMap();
+        config.put("cloud_name", "dpckdbkbe");
+        config.put("api_key", "712896963797844");
+        config.put("api_secret", "rmCz5BZnscJsw4-Dv5diAkohMss");
+        cloudinary = new Cloudinary(config);
+        return cloudinary;
     }
 }

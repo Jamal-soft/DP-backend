@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.util.Date;
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "project")
@@ -16,11 +15,11 @@ public class ProjectEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long orgId;
     private String title;
+    private Long orgId;
     private String target;
     private Long currentBalance;
     private String description;
-    private byte[] image;
+    private String image;
     private Date dateLimit;
 }

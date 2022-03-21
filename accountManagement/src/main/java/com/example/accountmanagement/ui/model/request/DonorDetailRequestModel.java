@@ -7,5 +7,5 @@ public class DonorDetailRequestModel {
     private String email;
     private String password;
     private String name;
-    private String age;
-}
+    private String phoneNumber;
+    private String image;}

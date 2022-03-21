@@ -25,8 +25,8 @@ public class OrganisationEntity {
     private Long rib;
     private String category;
     private boolean verified;
-    private byte[] verificationFile;
-    private byte[] image;
+    private String verificationFile;
+    private String image;
     private String Location;
     private String description;
 

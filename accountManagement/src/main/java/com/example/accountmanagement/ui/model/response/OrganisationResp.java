@@ -10,7 +10,7 @@ public class OrganisationResp {
     private Long rib;
     private String category;
     private boolean verified;
-    private byte[] image;
+    private String  image;
     private String Location;
     private String description;
 }
