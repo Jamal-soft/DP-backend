@@ -1,6 +1,7 @@
 package com.example.accountmanagement.ui.model.request;
 
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
 @Data
 public class OrganisationDetailsRequestModel {
@@ -11,7 +12,7 @@ public class OrganisationDetailsRequestModel {
     private String category;
     private boolean verified;
     private byte[] verificationFile;
-    private byte[] image;
+    private MultipartFile image;
     private String Location;
     private String description;
 }

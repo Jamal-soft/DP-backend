@@ -1,10 +1,13 @@
 package com.example.accountmanagement.service;
 
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import com.example.accountmanagement.exceptions.OrganisationServiceException;
 import com.example.accountmanagement.io.entity.OrganisationEntity;
 import com.example.accountmanagement.io.repository.OrganisationRepository;
 import com.example.accountmanagement.shared.OrganisationDto;
+import com.example.accountmanagement.ui.model.request.OrganisationDetailsRequestModel;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,41 +19,64 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class OrganisationServiceImpl implements OrganisationService{
     @Autowired
     OrganisationRepository organisationRepository;
-/*    @Autowired
-    Utils utils;*/
+    private final Cloudinary cloudinaryConfig;
 
     @Autowired
     BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    public OrganisationServiceImpl(Cloudinary cloudinaryConfig) {
+        this.cloudinaryConfig = cloudinaryConfig;
+    }
 
 
     @Override
-    public OrganisationDto createOrganisation(OrganisationDto organisationDto) {
-        if (organisationRepository.findByEmail(organisationDto.getEmail()) != null) throw new OrganisationServiceException("user already exists");
+    public OrganisationEntity createOrganisation(OrganisationDetailsRequestModel organisationDetailsRequestModel) {
+        if (organisationRepository.findByEmail(organisationDetailsRequestModel.getEmail()) != null) throw new OrganisationServiceException("user already exists");
         ModelMapper modelMapper = new ModelMapper();
 
 
-        //BeanUtils.copyProperties(user,userEntity);
-        OrganisationEntity organisationEntity = modelMapper.map(organisationDto, OrganisationEntity.class);
+        OrganisationEntity organisationEntity = modelMapper.map(organisationDetailsRequestModel, OrganisationEntity.class);
 
 
-        organisationEntity.setEncryptedPassword(bCryptPasswordEncoder.encode(organisationDto.getPassword()));
+        organisationEntity.setEncryptedPassword(bCryptPasswordEncoder.encode(organisationDetailsRequestModel.getPassword()));
+        if (organisationDetailsRequestModel.getImage()!=null){
+
+
+        try {
+            MultipartFile image = organisationDetailsRequestModel.getImage();
+            File uploadedFile = convertMultiPartToFile(image);
+            Map uploadResult = cloudinaryConfig.uploader().upload(uploadedFile, ObjectUtils.emptyMap());
+            boolean isDeleted = uploadedFile.delete();
+
+            if (isDeleted){
+                System.out.println("File successfully deleted");
+            }else
+                System.out.println("File doesn't exist");
+                organisationEntity.setImage(uploadResult.get("url").toString());
+            //return  uploadResult.get("url").toString();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        }
         OrganisationEntity storedUserDetails = organisationRepository.save(organisationEntity);
-        //BeanUtils.copyProperties(storedUserDetails,returnValue);
-        OrganisationDto returnValue = modelMapper.map(storedUserDetails, OrganisationDto.class);
         // Send an email message to user to verify their email address
 
 
 
-        return returnValue;
+        return storedUserDetails;
     }
 
     @Override
@@ -61,40 +87,14 @@ public class OrganisationServiceImpl implements OrganisationService{
         BeanUtils.copyProperties(userEntity, returnValue);
         return returnValue;
     }
-/*
-    @Override
-    public OrganisationDto getUserByUserId(String userId) {
-        OrganisationDto returnValue = new OrganisationDto();
-        UserEntity userEntity = organisationRepository.findByUserId(userId);
-        if (userEntity == null) throw new UserServiceException("user with ID : " + userId + " not found");
 
-        BeanUtils.copyProperties(userEntity, returnValue);
-        return returnValue;
+    private File convertMultiPartToFile(MultipartFile file) throws IOException {
+        File convFile = new File(file.getOriginalFilename());
+        FileOutputStream fos = new FileOutputStream(convFile);
+        fos.write(file.getBytes());
+        fos.close();
+        return convFile;
     }
-
-    @Override
-    public OrganisationDto updateUser(String id, UserDto userDto) {
-        UserEntity userEntity = organisationRepository.findByUserId(id);
-        if (userEntity == null) throw new UserServiceException(ErrorMessages.NO_RECORD_FOUND.getErrorMessage());
-        UserDto returnVlue = new UserDto();
-
-        userEntity.setFirstName(userDto.getFirstName());
-        userEntity.setLastName(userDto.getLastName());
-
-        UserEntity updatedUser = organisationRepository.save(userEntity);
-        BeanUtils.copyProperties(updatedUser, returnVlue);
-        return returnVlue;
-    }
-
-    @Override
-    public void deleteUser(String userId) {
-        UserEntity userEntity = organisationRepository.findByUserId(userId);
-        if (userEntity == null) {
-            throw new UserServiceException(ErrorMessages.NO_RECORD_FOUND.getErrorMessage());
-        }
-        organisationRepository.delete(userEntity);
-    }
-*/
 
     public List<OrganisationDto> getOrganisations(int page, int limit) {
         List<OrganisationDto> returnValue = new ArrayList<>();

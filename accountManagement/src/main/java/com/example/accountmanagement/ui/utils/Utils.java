@@ -1,4 +1,4 @@
-package com.example.accountmanagement.utils;
+package com.example.accountmanagement.ui.utils;
 
 import com.example.accountmanagement.security.SecurityConstants;
 import io.jsonwebtoken.*;

@@ -19,5 +19,5 @@ public class DonorEntity {
     private String email;
     private String encryptedPassword;
     private Long phoneNumber;
-    private byte[] image;
+    private String image;
 }
