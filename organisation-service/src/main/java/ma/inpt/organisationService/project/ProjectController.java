@@ -38,6 +38,9 @@ public class ProjectController {
     public List<ProjectListResponseToAdmin> getProjectsWithTheirOrganisationName(){
         return projectService.getProjectsWithTheirOrganisationName();
     }
-
+    @PutMapping("/projects/current-balance/update/{projectId}/{amount}")
+    public String updateCurrentBalance(@PathVariable("projectId") Long projectId,@PathVariable("amount") Long amount){
+        return projectService.updateCurrentBalance(projectId,amount);
+    }
 
 }

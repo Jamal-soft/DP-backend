@@ -1,5 +1,6 @@
 package ma.inpt.organisationService.organisation;
 
+import ma.inpt.organisationService.model.request.OrganisationUpdateRequestModel;
 import ma.inpt.organisationService.organisation.entity.Organisation;
 import ma.inpt.organisationService.organisation.model.response.OrganisationResponseModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,5 +42,9 @@ public class OrganisationController {
         return organisationService.acceptOrganisation(orgId);
     }
 
+    @PutMapping  (path = "/organisations/{orgId}")
+    public String updateOrganisation(@PathVariable(name = "orgId") Long orgId, @RequestBody OrganisationUpdateRequestModel organisationUpdateRequestModel){
+        return organisationService.updateOrganisation(orgId,organisationUpdateRequestModel);
+    }
 
 }

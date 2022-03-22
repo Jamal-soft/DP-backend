@@ -13,4 +13,6 @@ public class OrganisationResp {
     private String  image;
     private String Location;
     private String description;
+    private String phoneNumber;
+
 }

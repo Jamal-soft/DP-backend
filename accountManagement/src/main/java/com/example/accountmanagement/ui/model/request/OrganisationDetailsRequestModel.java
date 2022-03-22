@@ -11,8 +11,10 @@ public class OrganisationDetailsRequestModel {
     private Long rib;
     private String category;
     private boolean verified;
-    private byte[] verificationFile;
+    private String verificationFile;
     private MultipartFile image;
     private String Location;
     private String description;
+    private String phoneNumber;
+
 }

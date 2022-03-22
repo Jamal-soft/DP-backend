@@ -47,4 +47,14 @@ public class ProjectService {
         List<ProjectListResponseToAdmin> list = projectRepository.getProjectsWithTheirOrganisationName();
         return list;
     }
+
+    public String updateCurrentBalance(Long projectId,Long amount) {
+        ProjectEntity project = projectRepository.findById(projectId).get();
+        if (project!=null){
+            project.setCurrentBalance(project.getCurrentBalance() + amount);
+            projectRepository.save(project);
+            return "current balance updated succesfully";
+        }
+        return "project not found";
+    }
 }
