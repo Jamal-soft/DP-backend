@@ -7,6 +7,7 @@ public class SecurityConstants {
     public static final String TOKEN_PREFIX = "Bearer ";
     public static final String HEADER_STRING = "Authorization";
     public static final String H2_CONSOLE = "/h2-console/**";
+    public static final String UPDATECURRENTBALANCE = "/organisations/projects/current-balance/update/**";
 
     public static String getTokenSecret()
     {

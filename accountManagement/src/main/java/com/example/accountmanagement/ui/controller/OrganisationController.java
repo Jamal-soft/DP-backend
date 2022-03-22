@@ -44,7 +44,7 @@ public class OrganisationController {
 
 
     @PostMapping("/signup/organisations")
-    public OrganisationResp createOrganisation(@RequestBody OrganisationDetailsRequestModel organisationDetailsRequestModel/*,@RequestParam("image") MultipartFile image*/) throws Exception{
+    public OrganisationResp createOrganisation(@RequestBody OrganisationDetailsRequestModel organisationDetailsRequestModel) throws Exception{
         if (organisationDetailsRequestModel.getEmail().isEmpty()) throw new OrganisationServiceException("missing required field");
         ModelMapper modelMapper = new ModelMapper();
         OrganisationEntity createdOrganisation= organisationService.createOrganisation(organisationDetailsRequestModel);

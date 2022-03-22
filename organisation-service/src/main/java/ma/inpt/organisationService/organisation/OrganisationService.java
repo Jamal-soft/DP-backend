@@ -1,9 +1,11 @@
 package ma.inpt.organisationService.organisation;
 
+import ma.inpt.organisationService.model.request.OrganisationUpdateRequestModel;
 import ma.inpt.organisationService.organisation.entity.Organisation;
 import ma.inpt.organisationService.organisation.model.response.OrganisationResponseModel;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -13,6 +15,8 @@ import java.util.List;
 public class OrganisationService {
     @Autowired
     OrganisationRepository organisationRepository;
+    @Autowired
+    BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public List<OrganisationResponseModel> getAllOrganisations() {
         ModelMapper modelMapper = new ModelMapper();
@@ -72,5 +76,29 @@ public class OrganisationService {
             return e.getMessage();
         }
         return "organisation with id "+orgId + " accepted";
+    }
+
+    public String updateOrganisation(Long orgId, OrganisationUpdateRequestModel organisationUpdateRequestModel) {
+        Organisation organisation = organisationRepository.findById(orgId).get();
+        if (organisation!=null){
+            if (organisationUpdateRequestModel.getName()!=null)
+            organisation.setName(organisationUpdateRequestModel.getName());
+            if (organisation.getCategory()!=null)
+            organisation.setCategory(organisation.getCategory());
+            if (organisationUpdateRequestModel.getDescription()!=null)
+            organisation.setDescription(organisationUpdateRequestModel.getDescription());
+            if (organisationUpdateRequestModel.getLocation()!=null)
+            organisation.setLocation(organisationUpdateRequestModel.getLocation());
+            if (organisationUpdateRequestModel.getPhoneNumber()!=null)
+            organisation.setPhoneNumber(organisationUpdateRequestModel.getPhoneNumber());
+            if (organisationUpdateRequestModel.getPassword()!=null){
+                organisation.setEncryptedPassword(bCryptPasswordEncoder.encode(organisationUpdateRequestModel.getPassword()));
+            }
+            organisationRepository.save(organisation);
+            return "organisation succesfully updated";
+
+        }
+        return "organisation not found";
+
     }
 }

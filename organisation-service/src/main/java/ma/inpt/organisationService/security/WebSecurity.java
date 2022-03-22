@@ -28,6 +28,8 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 .csrf().disable().authorizeRequests()
                 .antMatchers(SecurityConstants.H2_CONSOLE)
                 .permitAll()
+                .antMatchers(SecurityConstants.UPDATECURRENTBALANCE)
+                .permitAll()
                 .anyRequest().authenticated().and()
                 //.addFilter(getAuthenticationFilter())
                 .addFilter(new AuthorizationFilter(authenticationManager()))

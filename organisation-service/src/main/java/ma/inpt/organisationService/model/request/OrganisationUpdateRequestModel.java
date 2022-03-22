@@ -1,12 +1,12 @@
-package ma.inpt.organisationService.organisation.model.response;
+package ma.inpt.organisationService.model.request;
 
 import lombok.Data;
 
 @Data
-public class OrganisationResponseModel {
-    private Long id;
+public class OrganisationUpdateRequestModel {
     private String name;
-    private String email;
+    private String password;
+    private Long rib;
     private String category;
     private String image;
     private String Location;

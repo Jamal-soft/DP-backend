@@ -1,6 +1,7 @@
 package ma.inpt.donation;
 
 
+import ma.inpt.feignClients.ProjectFeignClient;
 import ma.inpt.model.DonationRequestModel;
 
 import ma.inpt.model.DonationResponseModelToCalculateSumOfDonations;
@@ -15,14 +16,14 @@ import java.util.List;
 public class DonationService {
     @Autowired
     DonationRepository donationRepository;
+    @Autowired
+    ProjectFeignClient projectFeignClient;
 
     public List<DonationEntity> getDonationByOrgId(Long id) {
         return donationRepository.findAllByOrgId(id);
     }
 
     public DonationEntity createDonation(DonationRequestModel donationRequestModel) {
-        ModelMapper modelMapper  = new ModelMapper();
-        //DonationEntity donationEntity = modelMapper.map(donationRequestModel,DonationEntity.class);
         DonationEntity donationEntity = new DonationEntity();
         donationEntity.setDonorId(donationRequestModel.getDonorId());
         donationEntity.setOrgId(donationRequestModel.getOrgId());
@@ -30,6 +31,8 @@ public class DonationService {
         donationEntity.setProjectId(donationRequestModel.getProjectId());
         donationEntity.setDate(new Date());
         donationRepository.save(donationEntity);
+        String str = projectFeignClient.updateCurrentBalance(donationRequestModel.getProjectId(),donationRequestModel.getAmount());
+        System.out.print(str);
         return donationRepository.save(donationEntity);
     }
 
