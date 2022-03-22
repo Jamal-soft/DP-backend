@@ -49,6 +49,7 @@ public class AuthenticationController {
                 return ResponseEntity.ok(new JwtResponse(token,
                         organisationEntity.getId(),
                         organisationEntity.getEmail(),
+                        organisationEntity.getName(),
                         organisationEntity.getRole()));
             }
         }
@@ -60,6 +61,7 @@ public class AuthenticationController {
                 return ResponseEntity.ok(new JwtResponse(token,
                         donorEntity.getId(),
                         donorEntity.getEmail(),
+                        donorEntity.getName(),
                         donorEntity.getRole()));
             }
         }
@@ -71,6 +73,7 @@ public class AuthenticationController {
                 return ResponseEntity.ok(new JwtResponse(token,
                         adminEntity.getId(),
                         adminEntity.getEmail(),
+                        adminEntity.getName(),
                         adminEntity.getRole()));
             }
         }
