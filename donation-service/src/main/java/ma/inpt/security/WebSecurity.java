@@ -30,6 +30,9 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .antMatchers(HttpMethod.POST, SecurityConstants.SIGN_IN_URL)
                 .permitAll()
+                .antMatchers(HttpMethod.POST, "/payment")
+                .permitAll()
+
                 .antMatchers(HttpMethod.GET, SecurityConstants.VERIFICATION_EMAIL_URL)
                 .permitAll()
                 .antMatchers(HttpMethod.POST, SecurityConstants.PASSWORD_RESET_REQUEST_URL)

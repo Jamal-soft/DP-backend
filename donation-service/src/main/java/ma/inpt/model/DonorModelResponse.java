@@ -6,5 +6,7 @@ import lombok.Data;
 public class DonorModelResponse {
     private String name;
     private Long phoneNumber;
-    private byte[] image;
+    private String image;
+    private String score;
+    private String location;
 }

@@ -14,10 +14,10 @@ public class PaymentController {
     PaymentService service;
 
     @PostMapping
-    public ResponseEntity<String> completePayment(@RequestBody PaymentRequest request) throws StripeException {
+    public ResponseEntity<ResponseModelStripe> completePayment(@RequestBody PaymentRequest request) throws StripeException {
         String chargeId= service.charge(request);
-        return chargeId!=null? new ResponseEntity<String>(chargeId, HttpStatus.OK):
-                new ResponseEntity<String>("Please check the credit card details entered",HttpStatus.BAD_REQUEST);
+        return chargeId!=null? new ResponseEntity<ResponseModelStripe>(new ResponseModelStripe("Payment Successful",true), HttpStatus.OK):
+                new ResponseEntity<ResponseModelStripe>(new ResponseModelStripe("Payment Failed",false),HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler

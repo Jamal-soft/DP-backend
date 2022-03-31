@@ -20,4 +20,7 @@ public class DonorEntity {
     private String encryptedPassword;
     private Long phoneNumber;
     private String image;
+    private String score;
+    private String location;
+
 }

@@ -126,87 +126,20 @@ public class OrganisationServiceImpl implements OrganisationService{
         true, true,
         true, true, new ArrayList<>());
 
-/*
-        return new User(userEntity.getEmail(), userEntity.getEncryptedPassword(), new ArrayList<>());
-*/
+
     }
 
-/*
-    @Override
-    public boolean verifyEmailToken(String token) {
-        boolean returnValue = false;
 
-        // Find user by token
-        UserEntity userEntity = organisationRepository.findUserByEmailVerificationToken(token);
+    public String upload(MultipartFile image) throws IOException {
+        File uploadedFile = convertMultiPartToFile(image);
+        Map uploadResult = cloudinaryConfig.uploader().upload(uploadedFile, ObjectUtils.emptyMap());
+        boolean isDeleted = uploadedFile.delete();
+        System.out.println(uploadResult.get("url").toString());
 
-        if (userEntity != null) {
-            boolean hastokenExpired = Utils.hasTokenExpired(token);
-            if (!hastokenExpired) {
-                userEntity.setEmailVerificationToken(null);
-                userEntity.setEmailVerificationStatus(Boolean.TRUE);
-                organisationRepository.save(userEntity);
-                returnValue = true;
-            }
-        }
-        return returnValue;
+        if (isDeleted){
+            System.out.println("File successfully deleted");
+        }else
+            System.out.println("File doesn't exist");
+        return "dfdsqfqs";
     }
-
-    @Override
-    public boolean requestPasswordReset(String email) {
-        boolean returnValue = false;
-
-        UserEntity userEntity = organisationRepository.findByEmail(email);
-
-        if (userEntity == null) {
-            return returnValue;
-        }
-
-        String token = new Utils().generatePasswordResetToken(userEntity.getUserId());
-
-        PasswordResetTokenEntity passwordResetTokenEntity = new PasswordResetTokenEntity();
-        passwordResetTokenEntity.setToken(token);
-        passwordResetTokenEntity.setUserDetails(userEntity);
-        passwordResetTokenRepository.save(passwordResetTokenEntity);
-
-        returnValue = new AmazonSES().sendPasswordResetRequest(
-                userEntity.getFirstName(),
-                userEntity.getEmail(),
-                token);
-
-        return returnValue;
-    }
-
-    @Override
-    public boolean resetPassword(String token, String password) {
-        boolean returnValue = false;
-
-        if( Utils.hasTokenExpired(token) )
-        {
-            return returnValue;
-        }
-
-        PasswordResetTokenEntity passwordResetTokenEntity = passwordResetTokenRepository.findByToken(token);
-
-        if (passwordResetTokenEntity == null) {
-            return returnValue;
-        }
-
-        // Prepare new password
-        String encodedPassword = bCryptPasswordEncoder.encode(password);
-
-        // Update User password in database
-        UserEntity userEntity = passwordResetTokenEntity.getUserDetails();
-        userEntity.setEncryptedPassword(encodedPassword);
-        UserEntity savedUserEntity = organisationRepository.save(userEntity);
-
-        // Verify if password was saved successfully
-        if (savedUserEntity != null && savedUserEntity.getEncryptedPassword().equalsIgnoreCase(encodedPassword)) {
-            returnValue = true;
-        }
-
-        // Remove Password Reset token from database
-        passwordResetTokenRepository.delete(passwordResetTokenEntity);
-
-        return returnValue;
-    }*/
 }
