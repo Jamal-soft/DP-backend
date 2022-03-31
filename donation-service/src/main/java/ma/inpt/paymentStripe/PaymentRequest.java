@@ -11,4 +11,7 @@ public class PaymentRequest {
     private int amount;
     private Currency currency;
     private String id;
+    private Long projectId;
+    private Long orgId;
+    private Long donorId;
 }

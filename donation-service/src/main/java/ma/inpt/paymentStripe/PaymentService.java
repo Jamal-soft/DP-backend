@@ -5,6 +5,10 @@ import com.stripe.exception.StripeException;
 import com.stripe.model.Charge;
 import com.stripe.model.PaymentIntent;
 import com.stripe.param.PaymentIntentCreateParams;
+import ma.inpt.donation.DonationEntity;
+import ma.inpt.donation.DonationService;
+import ma.inpt.model.DonationRequestModel;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +19,8 @@ import java.util.List;
 import java.util.Map;
 @Service
 public class PaymentService {
+    @Autowired
+    DonationService donationService;
     @Value("${STRIPE_SECRET_KEY}")
     private String secretKey;
 
@@ -34,8 +40,18 @@ public class PaymentService {
         chargeParams.put("payment_method_types",
                 paymentMethodTypes);
         PaymentIntent paymentIntent = PaymentIntent.create(chargeParams);
-
-        return paymentIntent.getId();
+        String chargeId = paymentIntent.getId();
+        if (chargeId!=null) {
+            DonationRequestModel donationRequestModel = new DonationRequestModel(
+                    chargeRequest.getProjectId(),
+                    chargeRequest.getOrgId(),
+                    chargeRequest.getDonorId(),
+                    (long) chargeRequest.getAmount()
+            );
+            DonationEntity donationEntity = donationService.createDonation(donationRequestModel);
+            System.out.print(donationEntity);
+        }
+        return chargeId;
 
 
 
