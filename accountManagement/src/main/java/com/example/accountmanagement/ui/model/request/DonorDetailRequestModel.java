@@ -8,4 +8,5 @@ public class DonorDetailRequestModel {
     private String password;
     private String name;
     private String phoneNumber;
-    private String image;}
+    private String image;
+}

@@ -5,6 +5,8 @@ import ma.inpt.feignClients.ProjectFeignClient;
 import ma.inpt.model.DonationRequestModel;
 
 import ma.inpt.model.DonationResponseModelToCalculateSumOfDonations;
+import ma.inpt.model.DonationResponseModelToShowInDashboardOfADonor;
+import ma.inpt.model.DonationResponseSumOfDonationsOfADonorPerOrganisation;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -44,5 +46,13 @@ public class DonationService {
 
     public Long getTotalSomeOfDonations() {
         return donationRepository.getTotalSomeOfDonations();
+    }
+
+    public List<DonationResponseModelToShowInDashboardOfADonor> getDonationsOfADonorAndShowItInItsDashboard(Long donorId) {
+        return donationRepository.getDonationsOfADonorAndShowItInItsDashboard(donorId);
+    }
+
+    public List<DonationResponseSumOfDonationsOfADonorPerOrganisation> getSumOfDonationsOfADonorPerOrganisation(Long donorId) {
+        return donationRepository.getSumOfDonationsOfADonorPerOrganisation(donorId);
     }
 }

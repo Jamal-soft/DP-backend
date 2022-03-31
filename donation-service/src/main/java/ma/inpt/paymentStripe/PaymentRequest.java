@@ -10,5 +10,5 @@ public class PaymentRequest {
     //private String description;
     private int amount;
     private Currency currency;
-    private Token token;
+    private String id;
 }
