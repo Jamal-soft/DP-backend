@@ -43,7 +43,7 @@ public class OrganisationController {
     }
 
     @PutMapping  (path = "/organisations/{orgId}")
-    public String updateOrganisation(@PathVariable(name = "orgId") Long orgId, @RequestBody OrganisationUpdateRequestModel organisationUpdateRequestModel){
+    public String updateOrganisation(@PathVariable(name = "orgId") Long orgId, @ModelAttribute OrganisationUpdateRequestModel organisationUpdateRequestModel){
         return organisationService.updateOrganisation(orgId,organisationUpdateRequestModel);
     }
 

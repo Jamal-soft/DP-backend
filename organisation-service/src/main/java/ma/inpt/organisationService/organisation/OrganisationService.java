@@ -3,10 +3,12 @@ package ma.inpt.organisationService.organisation;
 import ma.inpt.organisationService.model.request.OrganisationUpdateRequestModel;
 import ma.inpt.organisationService.organisation.entity.Organisation;
 import ma.inpt.organisationService.organisation.model.response.OrganisationResponseModel;
+import ma.inpt.organisationService.utils.Utils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +19,11 @@ public class OrganisationService {
     OrganisationRepository organisationRepository;
     @Autowired
     BCryptPasswordEncoder bCryptPasswordEncoder;
+    private Utils utils;
+
+    public OrganisationService(Utils utils) {
+        this.utils = utils;
+    }
 
     public List<OrganisationResponseModel> getAllOrganisations() {
         ModelMapper modelMapper = new ModelMapper();
@@ -94,10 +101,18 @@ public class OrganisationService {
             if (organisationUpdateRequestModel.getPassword()!=null){
                 organisation.setEncryptedPassword(bCryptPasswordEncoder.encode(organisationUpdateRequestModel.getPassword()));
             }
+            MultipartFile image = organisationUpdateRequestModel.getImage();
+            if (image!=null){
+                String path = utils.uploadFile(image);
+                if (path!=null){
+                    organisation.setImage(path);
+                }
+
+            }
             organisationRepository.save(organisation);
             return "organisation succesfully updated";
-
         }
+
         return "organisation not found";
 
     }

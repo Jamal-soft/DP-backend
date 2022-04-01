@@ -10,6 +10,7 @@ import com.example.accountmanagement.ui.model.request.ResetPasswordRequestModel;
 import com.example.accountmanagement.ui.model.response.DonorResp;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,7 +22,7 @@ public class DonorController {
 
 
     @PostMapping(path = "/signup/donors")
-    public DonorResp createDonor(@RequestBody DonorDetailRequestModel donorDetailRequestModel) throws Exception {
+    public DonorResp createDonor(@ModelAttribute DonorDetailRequestModel donorDetailRequestModel) throws Exception {
         if (donorDetailRequestModel.getEmail().isEmpty()) throw new DonorServiceException("missing required field");
         ModelMapper modelMapper=new ModelMapper();
         DonorEntity createdDonor = donorService.createDonor(donorDetailRequestModel);

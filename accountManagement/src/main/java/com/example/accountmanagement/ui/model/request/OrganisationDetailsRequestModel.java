@@ -11,7 +11,7 @@ public class OrganisationDetailsRequestModel {
     private Long rib;
     private String category;
     private boolean verified;
-    private String verificationFile;
+    private MultipartFile verificationFile;
     private MultipartFile image;
     private String Location;
     private String description;

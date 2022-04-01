@@ -2,6 +2,7 @@ package com.example.accountmanagement;
 
 import com.cloudinary.Cloudinary;
 import com.example.accountmanagement.security.AppProperties;
+import com.example.accountmanagement.ui.utils.Utils;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;

@@ -1,6 +1,7 @@
 package ma.inpt.donor;
 
 import ma.inpt.model.DonorModelResponse;
+import ma.inpt.model.DonorModelResponseWithSumOfDonations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,5 +23,11 @@ public class DonorController {
     public DonorModelResponse getDonorById(@PathVariable Long id){
         return donorService.getDonorById(id);
     }
+
+    @GetMapping("/donors/{id}/sum-donations")
+    public DonorModelResponseWithSumOfDonations getSumOfDonationsByDonorId(@PathVariable Long id){
+        return donorService.getSumOfDonationsByDonorId(id);
+    }
+
 
 }

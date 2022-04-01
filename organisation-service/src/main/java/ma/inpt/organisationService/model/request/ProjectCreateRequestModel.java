@@ -2,6 +2,7 @@ package ma.inpt.organisationService.model.request;
 
 
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
 
 import java.util.Date;
@@ -14,6 +15,6 @@ public class ProjectCreateRequestModel {
     private Long currentBalance;
     private Long orgId;
     private String description;
-    //private byte[] image;
+    private MultipartFile image;
     private Date dateLimit;
 }

@@ -1,10 +1,13 @@
 package ma.inpt.organisationService.project;
 
+import com.cloudinary.Cloudinary;
 import ma.inpt.organisationService.model.request.ProjectCreateRequestModel;
 import ma.inpt.organisationService.model.response.ProjectListResponseToAdmin;
-import org.modelmapper.ModelMapper;
+import ma.inpt.organisationService.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
 
 import java.util.List;
 
@@ -12,6 +15,11 @@ import java.util.List;
 public class ProjectService {
     @Autowired
     ProjectRepository projectRepository;
+    private Utils utils;
+
+    public ProjectService(Utils utils) {
+        this.utils = utils;
+    }
 
     public List<ProjectEntity> getAllProjects() {
         return projectRepository.findAll();
@@ -27,11 +35,22 @@ public class ProjectService {
         project.setOrgId(projectCreateRequestModel.getOrgId());
         project.setDescription(projectCreateRequestModel.getDescription());
         project.setDateLimit(projectCreateRequestModel.getDateLimit());
+        MultipartFile image = projectCreateRequestModel.getImage();
+        if (image!=null){
+            String path = utils.uploadFile(image);
+            if (path!=null){
+                project.setImage(path);
+            }
+
+        }
 
         return projectRepository.save(project);
 
 
     }
+
+
+
     // une fonction qui va chercher le projet correspond a un id
     public ProjectEntity getProjectById(Long id) {
         ProjectEntity project = projectRepository.findById(id).get();
