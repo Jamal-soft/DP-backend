@@ -19,7 +19,7 @@ public class ProjectController {
     }
 
     @PostMapping("/projects")
-    public ProjectEntity createProject(@RequestBody ProjectCreateRequestModel projectCreateRequestModel ){
+    public ProjectEntity createProject(@ModelAttribute ProjectCreateRequestModel projectCreateRequestModel ){
         return projectService.createProject(projectCreateRequestModel);
     }
 

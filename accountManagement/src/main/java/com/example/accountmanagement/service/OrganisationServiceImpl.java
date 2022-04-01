@@ -2,12 +2,12 @@ package com.example.accountmanagement.service;
 
 
 import com.cloudinary.Cloudinary;
-import com.cloudinary.utils.ObjectUtils;
 import com.example.accountmanagement.exceptions.OrganisationServiceException;
 import com.example.accountmanagement.io.entity.OrganisationEntity;
 import com.example.accountmanagement.io.repository.OrganisationRepository;
 import com.example.accountmanagement.shared.OrganisationDto;
 import com.example.accountmanagement.ui.model.request.OrganisationDetailsRequestModel;
+import com.example.accountmanagement.ui.utils.Utils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,24 +21,21 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class OrganisationServiceImpl implements OrganisationService{
+    private Utils utils;
     @Autowired
     OrganisationRepository organisationRepository;
-    private final Cloudinary cloudinaryConfig;
+
 
     @Autowired
     BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public OrganisationServiceImpl(Cloudinary cloudinaryConfig) {
-        this.cloudinaryConfig = cloudinaryConfig;
+    public OrganisationServiceImpl( Utils utils) {
+        this.utils = utils;
     }
 
 
@@ -52,24 +49,20 @@ public class OrganisationServiceImpl implements OrganisationService{
 
 
         organisationEntity.setEncryptedPassword(bCryptPasswordEncoder.encode(organisationDetailsRequestModel.getPassword()));
-        if (organisationDetailsRequestModel.getImage()!=null){
+        MultipartFile image = organisationDetailsRequestModel.getImage();
 
-
-        try {
-            MultipartFile image = organisationDetailsRequestModel.getImage();
-            File uploadedFile = convertMultiPartToFile(image);
-            Map uploadResult = cloudinaryConfig.uploader().upload(uploadedFile, ObjectUtils.emptyMap());
-            boolean isDeleted = uploadedFile.delete();
-
-            if (isDeleted){
-                System.out.println("File successfully deleted");
-            }else
-                System.out.println("File doesn't exist");
-                organisationEntity.setImage(uploadResult.get("url").toString());
-            //return  uploadResult.get("url").toString();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        if (image!=null){
+            String path = utils.uploadFile(image);
+            if (path!=null){
+                organisationEntity.setImage(path);
+            }
         }
+        MultipartFile file = organisationDetailsRequestModel.getVerificationFile();
+        if (file!=null){
+            String path = utils.uploadFile(file);
+            if (path!=null){
+                organisationEntity.setVerificationFile(path);
+            }
         }
         OrganisationEntity storedUserDetails = organisationRepository.save(organisationEntity);
         // Send an email message to user to verify their email address
@@ -88,13 +81,7 @@ public class OrganisationServiceImpl implements OrganisationService{
         return returnValue;
     }
 
-    private File convertMultiPartToFile(MultipartFile file) throws IOException {
-        File convFile = new File(file.getOriginalFilename());
-        FileOutputStream fos = new FileOutputStream(convFile);
-        fos.write(file.getBytes());
-        fos.close();
-        return convFile;
-    }
+
 
     public List<OrganisationDto> getOrganisations(int page, int limit) {
         List<OrganisationDto> returnValue = new ArrayList<>();
@@ -130,16 +117,5 @@ public class OrganisationServiceImpl implements OrganisationService{
     }
 
 
-    public String upload(MultipartFile image) throws IOException {
-        File uploadedFile = convertMultiPartToFile(image);
-        Map uploadResult = cloudinaryConfig.uploader().upload(uploadedFile, ObjectUtils.emptyMap());
-        boolean isDeleted = uploadedFile.delete();
-        System.out.println(uploadResult.get("url").toString());
 
-        if (isDeleted){
-            System.out.println("File successfully deleted");
-        }else
-            System.out.println("File doesn't exist");
-        return "dfdsqfqs";
-    }
 }

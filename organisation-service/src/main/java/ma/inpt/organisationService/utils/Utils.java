@@ -1,11 +1,7 @@
-package com.example.accountmanagement.ui.utils;
+package ma.inpt.organisationService.utils;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
-import com.example.accountmanagement.security.SecurityConstants;
-import io.jsonwebtoken.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -15,8 +11,6 @@ import java.io.IOException;
 import java.util.Map;
 @Component
 public class Utils {
-    private static final Logger logger = LoggerFactory.getLogger(Utils.class);
-
     private final Cloudinary cloudinaryConfig;
 
     public Utils(Cloudinary cloudinaryConfig) {
@@ -24,28 +18,6 @@ public class Utils {
     }
 
 
-    public String getUserNameFromJwtToken(String token) {
-        return Jwts.parser().setSigningKey(SecurityConstants.getTokenSecret()).parseClaimsJws(token).getBody().getSubject();
-    }
-
-    public boolean isValidToken(String token) {
-        try {
-            Jwts.parser().setSigningKey(SecurityConstants.getTokenSecret()).parseClaimsJws(token);
-            return true;
-        } catch (SignatureException e) {
-            logger.error("Invalid JWT signature: {}", e.getMessage());
-        } catch (MalformedJwtException e) {
-            logger.error("Invalid JWT token: {}", e.getMessage());
-        } catch (ExpiredJwtException e) {
-            logger.error("JWT token is expired: {}", e.getMessage());
-        } catch (UnsupportedJwtException e) {
-            logger.error("JWT token is unsupported: {}", e.getMessage());
-        } catch (IllegalArgumentException e) {
-            logger.error("JWT claims string is empty: {}", e.getMessage());
-        }
-
-        return false;
-    }
     public String uploadFile(MultipartFile file){
         try {
             File uploadedFile = convertMultiPartToFile(file);

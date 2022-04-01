@@ -18,7 +18,7 @@ public class UpdateController {
     }
 
     @PostMapping("/updates")
-    public UpdateEntity createUpdateOfProject(@RequestBody UpdateCreateRequestModel updateCreateRequestModel ){
+    public UpdateEntity createUpdateOfProject(@ModelAttribute UpdateCreateRequestModel updateCreateRequestModel ){
         return updateService.createUpdateOfProject(updateCreateRequestModel);
     }
 

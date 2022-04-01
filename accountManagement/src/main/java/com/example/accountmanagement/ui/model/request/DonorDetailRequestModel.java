@@ -1,6 +1,7 @@
 package com.example.accountmanagement.ui.model.request;
 
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
 @Data
 public class DonorDetailRequestModel {
@@ -8,5 +9,5 @@ public class DonorDetailRequestModel {
     private String password;
     private String name;
     private String phoneNumber;
-    private String image;
+    private MultipartFile image;
 }

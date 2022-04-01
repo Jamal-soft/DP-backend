@@ -50,7 +50,8 @@ public class AuthenticationController {
                         organisationEntity.getId(),
                         organisationEntity.getEmail(),
                         organisationEntity.getName(),
-                        organisationEntity.getRole()));
+                        organisationEntity.getRole(),
+                        organisationEntity.getImage()));
             }
         }
 
@@ -62,7 +63,8 @@ public class AuthenticationController {
                         donorEntity.getId(),
                         donorEntity.getEmail(),
                         donorEntity.getName(),
-                        donorEntity.getRole()));
+                        donorEntity.getRole(),
+                        donorEntity.getImage()));
             }
         }
 
@@ -74,7 +76,8 @@ public class AuthenticationController {
                         adminEntity.getId(),
                         adminEntity.getEmail(),
                         adminEntity.getName(),
-                        adminEntity.getRole()));
+                        adminEntity.getRole(),
+                        adminEntity.getImage()));
             }
         }
 
