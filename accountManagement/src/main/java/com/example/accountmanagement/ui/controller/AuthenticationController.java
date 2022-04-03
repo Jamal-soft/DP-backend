@@ -42,7 +42,7 @@ public class AuthenticationController {
         OrganisationEntity organisationEntity = organisationRepository.findByEmail(loginRequestModel.getEmail());
         AdminEntity adminEntity = adminRepository.findByEmail(loginRequestModel.getEmail());
 
-        if ( organisationEntity!=null){
+        if ( organisationEntity!=null && organisationEntity.isVerified()){
             if ( bCryptPasswordEncoder.matches(loginRequestModel.getPassword(), organisationEntity.getEncryptedPassword())) {
                 String token = generateToken(loginRequestModel);
 
