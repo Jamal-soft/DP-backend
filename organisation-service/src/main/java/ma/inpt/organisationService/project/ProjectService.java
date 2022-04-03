@@ -1,6 +1,5 @@
 package ma.inpt.organisationService.project;
 
-import com.cloudinary.Cloudinary;
 import ma.inpt.organisationService.model.request.ProjectCreateRequestModel;
 import ma.inpt.organisationService.model.response.ProjectListResponseToAdmin;
 import ma.inpt.organisationService.utils.Utils;

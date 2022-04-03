@@ -10,10 +10,7 @@ import com.example.accountmanagement.ui.model.request.ResetPasswordRequestModel;
 import com.example.accountmanagement.ui.model.response.DonorResp;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class DonorController {
@@ -36,8 +33,8 @@ public class DonorController {
         return donorService.resetPassword(resetPasswordRequestModel);
     }
 
-    @PostMapping(path = "/donors/update-profile/")
-    public String updateProfile(@RequestBody DonorRequestUpdateProfile DonorRequestUpdateProfile) throws Exception {
-        return donorService.updateProfile(DonorRequestUpdateProfile);
+    @PutMapping(path = "/donors/update-profile/{donorId}")
+    public String updateProfile(@PathVariable("donorId") Long donorId, @ModelAttribute DonorRequestUpdateProfile DonorRequestUpdateProfile) throws Exception {
+        return donorService.updateProfile(donorId,DonorRequestUpdateProfile);
     }
 }

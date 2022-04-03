@@ -1,7 +1,6 @@
 package com.example.accountmanagement.service;
 
 
-import com.cloudinary.Cloudinary;
 import com.example.accountmanagement.exceptions.OrganisationServiceException;
 import com.example.accountmanagement.io.entity.OrganisationEntity;
 import com.example.accountmanagement.io.repository.OrganisationRepository;

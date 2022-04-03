@@ -1,0 +1,89 @@
+version: "3"
+services:
+  
+  organisation-service:
+    container_name: organisation-service
+    image: organisation-service
+    networks:
+      - my-network
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://database:3306/db_project
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=admin
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    ports:
+      - "8081:8081"
+    
+    depends_on:
+      - database
+
+  donation-service:
+    container_name: donation-service
+    image: donation-service
+    networks:
+      - my-network
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://database:3306/db_project
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=admin
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    ports:
+      - "8082:8082"
+
+    depends_on:
+      - database
+
+  account-management-service:
+    container_name: account-management-service
+    image: account-management-service
+    networks:
+      - my-network
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://database:3306/db_project
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=admin
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    ports:
+      - "8090:8090"
+
+    depends_on:
+      - database
+#  gateway:
+#    container_name: gateway
+#    image: gateway
+#    networks:
+#      - my-network
+#
+#    ports:
+#      - "9090:9090"
+#
+#
+#
+#  eureka-service:
+#    container_name: eureka-service
+#    image: eureka-service
+#    networks:
+#      - my-network
+#
+#    ports:
+#      - "8761:8761"
+
+
+
+  database:
+    container_name: database
+    image: mysql:8.0.17
+    networks:
+      - my-network
+    ports:
+      - "3307:3306"
+    
+    environment:
+      - MYSQL_ROOT_PASSWORD=admin
+      - MYSQL_DATABASE=db_project
+
+networks:
+    my-network:
+      driver: bridge
+  
+  
