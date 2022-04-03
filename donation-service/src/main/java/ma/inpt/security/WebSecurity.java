@@ -33,11 +33,10 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/payment")
                 .permitAll()
 
-                .antMatchers(HttpMethod.GET, SecurityConstants.VERIFICATION_EMAIL_URL)
+
+                .antMatchers(HttpMethod.GET, "/donors/*/sum-donations")
                 .permitAll()
-                .antMatchers(HttpMethod.POST, SecurityConstants.PASSWORD_RESET_REQUEST_URL)
-                .permitAll()
-                .antMatchers(HttpMethod.POST, SecurityConstants.PASSWORD_RESET_URL)
+                .antMatchers(HttpMethod.GET, "/donors")
                 .permitAll()
                 .antMatchers(SecurityConstants.H2_CONSOLE)
                 .permitAll()

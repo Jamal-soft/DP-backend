@@ -12,6 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Optional;
 
 
 @Service
@@ -55,8 +56,9 @@ public class DonorService {
 
     public String resetPassword(ResetPasswordRequestModel resetPasswordRequestModel) {
         if (!resetPasswordRequestModel.newPass.equals(resetPasswordRequestModel.newPassAgain)) return "doesn't match ";
-        DonorEntity donorEntity = donorRepository.findById(resetPasswordRequestModel.donorId).get();
-        if (donorEntity!=null){
+        Optional<DonorEntity> donorEntity1 = donorRepository.findById(resetPasswordRequestModel.donorId);
+        if (donorEntity1.isPresent()){
+            DonorEntity donorEntity = donorEntity1.get();
             if (!bCryptPasswordEncoder.matches(resetPasswordRequestModel.currentPass,donorEntity.getEncryptedPassword())) return "current password is false";
             donorEntity.setEncryptedPassword(bCryptPasswordEncoder.encode(resetPasswordRequestModel.newPass));
             donorRepository.save(donorEntity);
@@ -65,12 +67,25 @@ public class DonorService {
         return "can't find the donor";
     }
 
-    public String updateProfile(DonorRequestUpdateProfile donorRequestUpdateProfile) {
-        DonorEntity donorEntity = donorRepository.findById(donorRequestUpdateProfile.getId()).get();
-        if (donorEntity!=null){
+    public String updateProfile(Long donorId, DonorRequestUpdateProfile donorRequestUpdateProfile) {
+        Optional<DonorEntity> donorEntity1 = donorRepository.findById(donorId);
+        if (donorEntity1.isPresent()){
+            DonorEntity donorEntity =donorEntity1.get();
             donorEntity.setLocation(donorRequestUpdateProfile.getLocation());
             donorEntity.setName(donorRequestUpdateProfile.getName());
             donorEntity.setPhoneNumber(donorRequestUpdateProfile.getPhoneNumber());
+
+            MultipartFile image = donorRequestUpdateProfile.getImage();
+
+
+            if (image!=null){
+
+                String path = utils.uploadFile(image);
+                if (path!=null){
+                    donorEntity.setImage(path);
+                }
+
+            }
             donorRepository.save(donorEntity);
             return "profile updated succesfuly";
         }
