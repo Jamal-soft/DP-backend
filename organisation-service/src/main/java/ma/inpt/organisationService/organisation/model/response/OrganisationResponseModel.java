@@ -10,6 +10,7 @@ public class OrganisationResponseModel {
     private String category;
     private String image;
     private String Location;
+    private String verificationFile;
     private String description;
     private String phoneNumber;
 }

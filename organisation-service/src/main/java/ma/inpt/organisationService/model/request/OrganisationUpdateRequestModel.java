@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class OrganisationUpdateRequestModel {
     private String name;
     private String password;
+    private String currentPassword;
     private Long rib;
     private String category;
     private MultipartFile image;

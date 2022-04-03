@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class OrganisationService {
@@ -86,8 +87,9 @@ public class OrganisationService {
     }
 
     public String updateOrganisation(Long orgId, OrganisationUpdateRequestModel organisationUpdateRequestModel) {
-        Organisation organisation = organisationRepository.findById(orgId).get();
-        if (organisation!=null){
+        Optional<Organisation> organisation1 = organisationRepository.findById(orgId);
+        if (organisation1.isPresent()){
+            Organisation organisation = organisation1.get();
             if (organisationUpdateRequestModel.getName()!=null)
             organisation.setName(organisationUpdateRequestModel.getName());
             if (organisation.getCategory()!=null)
@@ -98,8 +100,16 @@ public class OrganisationService {
             organisation.setLocation(organisationUpdateRequestModel.getLocation());
             if (organisationUpdateRequestModel.getPhoneNumber()!=null)
             organisation.setPhoneNumber(organisationUpdateRequestModel.getPhoneNumber());
-            if (organisationUpdateRequestModel.getPassword()!=null){
-                organisation.setEncryptedPassword(bCryptPasswordEncoder.encode(organisationUpdateRequestModel.getPassword()));
+
+            if (organisationUpdateRequestModel.getCurrentPassword()!=null){
+                if (organisationUpdateRequestModel.getPassword()!=null){
+                    if (bCryptPasswordEncoder.matches(organisationUpdateRequestModel.getCurrentPassword(),organisation.getEncryptedPassword())){
+                        organisation.setEncryptedPassword(bCryptPasswordEncoder.encode(organisationUpdateRequestModel.getPassword()));
+
+                    }
+
+                }
+
             }
             MultipartFile image = organisationUpdateRequestModel.getImage();
             if (image!=null){
