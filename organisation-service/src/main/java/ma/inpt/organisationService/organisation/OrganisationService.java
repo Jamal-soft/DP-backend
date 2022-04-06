@@ -92,8 +92,8 @@ public class OrganisationService {
             Organisation organisation = organisation1.get();
             if (organisationUpdateRequestModel.getName()!=null)
             organisation.setName(organisationUpdateRequestModel.getName());
-            if (organisation.getCategory()!=null)
-            organisation.setCategory(organisation.getCategory());
+            if (organisationUpdateRequestModel.getCategory()!=null)
+            organisation.setCategory(organisationUpdateRequestModel.getCategory());
             if (organisationUpdateRequestModel.getDescription()!=null)
             organisation.setDescription(organisationUpdateRequestModel.getDescription());
             if (organisationUpdateRequestModel.getLocation()!=null)

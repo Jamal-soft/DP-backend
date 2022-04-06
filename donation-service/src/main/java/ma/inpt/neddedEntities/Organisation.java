@@ -17,6 +17,7 @@ public class Organisation {
     private Long id;
     private String name;
     private String email;
+    private String role="ORGANISATION";
     private String encryptedPassword;
     private Long rib;
     private String category;
