@@ -17,6 +17,7 @@ public class DonorEntity {
     private Long id;
     private String name;
     private String email;
+    private String role = "DONOR";
     private String encryptedPassword;
     private String phoneNumber;
     private String image;

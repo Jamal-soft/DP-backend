@@ -33,7 +33,7 @@ public class PaymentService {
                 new ArrayList<>();
         paymentMethodTypes.add("card");
         Map<String, Object> chargeParams = new HashMap<>();
-        chargeParams.put("amount", chargeRequest.getAmount());
+        chargeParams.put("amount", chargeRequest.getAmount()*100);
         chargeParams.put("currency", PaymentRequest.Currency.USD);
         chargeParams.put("payment_method", chargeRequest.getId());
         chargeParams.put("confirm", true);
@@ -46,7 +46,7 @@ public class PaymentService {
                     chargeRequest.getProjectId(),
                     chargeRequest.getOrgId(),
                     chargeRequest.getDonorId(),
-                    (long) chargeRequest.getAmount()
+                    (long) (chargeRequest.getAmount())
             );
             DonationEntity donationEntity = donationService.createDonation(donationRequestModel);
             System.out.print(donationEntity);

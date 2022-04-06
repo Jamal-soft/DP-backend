@@ -7,15 +7,18 @@ services:
     networks:
       - my-network
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:mysql://database:3306/db_project
-      - SPRING_DATASOURCE_USERNAME=root
-      - SPRING_DATASOURCE_PASSWORD=admin
+      - SPRING_DATASOURCE_URL=jdbc:mysql://database-1.cnug0nf9ugjg.eu-west-3.rds.amazonaws.com:3306/db_project
+      - SPRING_DATASOURCE_USERNAME=admin
+      - SPRING_DATASOURCE_PASSWORD=wiuJ9iGtYs37tLimKkSJ
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - eureka.client.serviceUrl.defaultZone=http://eureka-service:8761/eureka/  
     ports:
       - "8081:8081"
     
     depends_on:
-      - database
+      - eureka-service
+      - account-management-service
+#      - database
 
   donation-service:
     container_name: donation-service
@@ -23,15 +26,18 @@ services:
     networks:
       - my-network
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:mysql://database:3306/db_project
-      - SPRING_DATASOURCE_USERNAME=root
-      - SPRING_DATASOURCE_PASSWORD=admin
+      - SPRING_DATASOURCE_URL=jdbc:mysql://database-1.cnug0nf9ugjg.eu-west-3.rds.amazonaws.com:3306/db_project
+      - SPRING_DATASOURCE_USERNAME=admin
+      - SPRING_DATASOURCE_PASSWORD=wiuJ9iGtYs37tLimKkSJ
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - eureka.client.serviceUrl.defaultZone=http://eureka-service:8761/eureka/
     ports:
       - "8082:8082"
 
     depends_on:
-      - database
+      - eureka-service
+      - account-management-service
+#      - database
 
   account-management-service:
     container_name: account-management-service
@@ -39,48 +45,62 @@ services:
     networks:
       - my-network
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:mysql://database:3306/db_project
-      - SPRING_DATASOURCE_USERNAME=root
-      - SPRING_DATASOURCE_PASSWORD=admin
+      - SPRING_DATASOURCE_URL=jdbc:mysql://database-1.cnug0nf9ugjg.eu-west-3.rds.amazonaws.com:3306/db_project
+      - SPRING_DATASOURCE_USERNAME=admin
+      - SPRING_DATASOURCE_PASSWORD=wiuJ9iGtYs37tLimKkSJ
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - eureka.client.serviceUrl.defaultZone=http://eureka-service:8761/eureka/
     ports:
       - "8090:8090"
 
     depends_on:
-      - database
-#  gateway:
-#    container_name: gateway
-#    image: gateway
-#    networks:
-#      - my-network
-#
-#    ports:
-#      - "9090:9090"
-#
-#
-#
-#  eureka-service:
-#    container_name: eureka-service
-#    image: eureka-service
-#    networks:
-#      - my-network
-#
-#    ports:
-#      - "8761:8761"
-
-
-
-  database:
-    container_name: database
-    image: mysql:8.0.17
+      - eureka-service
+#      - database
+  gateway:
+    container_name: api-gateway
+    image: api-gateway
     networks:
       - my-network
+
     ports:
-      - "3307:3306"
-    
+      - "9090:9090"
     environment:
-      - MYSQL_ROOT_PASSWORD=admin
-      - MYSQL_DATABASE=db_project
+    
+      - eureka.client.serviceUrl.defaultZone=http://eureka-service:8761/eureka/
+    depends_on:
+      - donation-service
+      - account-management-service
+      - organisation-service
+      - eureka-service
+
+
+
+  eureka-service:
+    container_name: eureka-service
+    image: eureka-service
+    networks:
+      - my-network
+
+    ports:
+      - "8761:8761"
+    environment:
+    
+      - eureka.client.serviceUrl.defaultZone=http://eureka-service:8761/eureka/
+      - eureka.instance.hostname=eureka-service
+
+
+
+#  database:
+#    container_name: database
+#    image: mysql:8.0.17
+#    networks:
+#      - my-network
+#    ports:
+#      - "3307:3306"
+#
+#    environment:
+#      - MYSQL_ROOT_PASSWORD=admin
+#      - MYSQL_DATABASE=db_project
 
 networks:
     my-network:
