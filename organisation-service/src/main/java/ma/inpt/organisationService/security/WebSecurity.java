@@ -30,6 +30,8 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .antMatchers(HttpMethod.GET,"/organisations/projects")
                 .permitAll()
+                .antMatchers(HttpMethod.GET,"/organisations/projects/*")
+                .permitAll()
                 .antMatchers(SecurityConstants.H2_CONSOLE)
                 .permitAll()
                 .antMatchers(SecurityConstants.UPDATECURRENTBALANCE)
