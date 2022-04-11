@@ -7,9 +7,9 @@ services:
     networks:
       - my-network
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:mysql://database-1.cnug0nf9ugjg.eu-west-3.rds.amazonaws.com:3306/db_project
-      - SPRING_DATASOURCE_USERNAME=admin
-      - SPRING_DATASOURCE_PASSWORD=wiuJ9iGtYs37tLimKkSJ
+      - SPRING_DATASOURCE_URL=jdbc:mysql://database:3306/db_project
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=admin
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
       - eureka.client.serviceUrl.defaultZone=http://eureka-service:8761/eureka/  
     ports:
@@ -26,9 +26,9 @@ services:
     networks:
       - my-network
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:mysql://database-1.cnug0nf9ugjg.eu-west-3.rds.amazonaws.com:3306/db_project
-      - SPRING_DATASOURCE_USERNAME=admin
-      - SPRING_DATASOURCE_PASSWORD=wiuJ9iGtYs37tLimKkSJ
+      - SPRING_DATASOURCE_URL=jdbc:mysql://database:3306/db_project
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=admin
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
       - eureka.client.serviceUrl.defaultZone=http://eureka-service:8761/eureka/
     ports:
@@ -45,9 +45,9 @@ services:
     networks:
       - my-network
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:mysql://database-1.cnug0nf9ugjg.eu-west-3.rds.amazonaws.com:3306/db_project
-      - SPRING_DATASOURCE_USERNAME=admin
-      - SPRING_DATASOURCE_PASSWORD=wiuJ9iGtYs37tLimKkSJ
+      - SPRING_DATASOURCE_URL=jdbc:mysql://database:3306/db_project
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=admin
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
       - eureka.client.serviceUrl.defaultZone=http://eureka-service:8761/eureka/
     ports:
